@@ -1,5 +1,7 @@
 # Write SKILL.md
 
+Derive the step list from the signed mermaid. Do not invent branches that are not on it.
+
 Frontmatter:
 
 ```yaml
@@ -36,4 +38,4 @@ and inside `implement.md`:
 
 Conditions stay one line. HiTL is always a template pointer.
 
-Then send HiTL/review_skill.md. Do not write processes until the step list is approved, unless the user says to keep going.
+Do not pause for a SKILL.md review. That happens in HiTL/retrospective.md.

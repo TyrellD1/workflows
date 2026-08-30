@@ -17,4 +17,12 @@ systems:
       Workflow log CLI. Use for every start, HiTL, and done event.
       Do not write log files by hand.
     commands:
-      - "shared/cli/workflows-log --workflow create-workflows --event start"
+      - "shared/cli/workflows-log --workflow create-workflow --event start"
+  - id: REPLACE_ME_a2h
+    description: >
+      Agent-to-human CLI. Use for HiTL escalations (review or issue).
+      Send the compressed a2h template. Do not POST to Discord yourself.
+    commands:
+      - "a2h default --json"
+      - "a2h info --json"
+      - "a2h send --json \"<message>\""

@@ -1,6 +1,6 @@
 # Intake
 
-Collect only what you need to scaffold. Do not design the full workflow in chat.
+Collect only what you need to draft a mermaid. Do not design the full workflow in chat.
 
 Get:
 
@@ -15,4 +15,4 @@ Get:
 
 If accepts/ends-with is missing, stop and use HiTL/clarify_purpose.md.
 
-Exit: you can write the SKILL.md step list from this intake.
+Exit: you can draft a mermaid from this intake.

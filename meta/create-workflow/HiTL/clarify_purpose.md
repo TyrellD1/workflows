@@ -4,7 +4,13 @@
 
 Intake cannot state what the workflow accepts and what it ends with.
 
-## Template
+## a2h
+
+```
+a2h send --json "create-workflow: need purpose. What does it accept and what does it end with? Reply in the agent chat."
+```
+
+## Chat
 
 ```
 Create workflow: need purpose

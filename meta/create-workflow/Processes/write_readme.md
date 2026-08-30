@@ -2,6 +2,8 @@
 
 Human-facing. Short sentences. Common words. No agent jargon unless you define it.
 
+Paste the signed mermaid. Do not draw a new one.
+
 Use this template. Drop trigger rows that do not apply. Keep at least one.
 
 ````markdown
@@ -24,7 +26,7 @@ Use this template. Drop trigger rows that do not apply. Keep at least one.
 ## How it works
 
 ```mermaid
-<diagram from Processes/create_mermaid_diagram.md>
+<signed diagram from Processes/create_mermaid_diagram.md>
 ```
 
 ## When a person gets involved
@@ -32,6 +34,6 @@ Use this template. Drop trigger rows that do not apply. Keep at least one.
 - <situation>
 ````
 
-Then send HiTL/review_readme.md. Iterate until approved.
+Do not pause for a README review. That happens in HiTL/retrospective.md.
 
-The mermaid is required. Do not ship a README without it.
+The mermaid is required. Do not ship a README without the signed diagram.

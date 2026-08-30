@@ -4,7 +4,13 @@
 
 The workflow could live in more than one of `coding/`, `gtm/`, `meta/`, `shared/`.
 
-## Template
+## a2h
+
+```
+a2h send --json "create-workflow: pick a folder for <name>. I suggest <guess>. Confirm in the agent chat."
+```
+
+## Chat
 
 ```
 Create workflow: pick a folder

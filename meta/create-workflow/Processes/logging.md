@@ -16,6 +16,6 @@ Writes one JSONL line to `~/.workflows/logs/<workflow>/<YYYY-MM-DD>.jsonl`.
 
 Always log: `start`, every `hitl`, `done`. Log `error` when you stop. Other events as needed.
 
-HiTL log: `--event hitl --template <name> --status escalated` on send, then `--status resolved` or `gave_up` when you leave that HiTL.
+HiTL log: `--event hitl --template <name> --status escalated` when you send (a2h and/or chat). Then `--status resolved` or `gave_up` when you leave that HiTL. Chat-only still logs.
 
 If the CLI is missing and you have no OS access, skip the file write. Do not invent a side channel. Note it in the retrospective.

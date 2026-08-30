@@ -1,6 +1,6 @@
 # Write placeholders
 
-Do this in the **new** workflow folder. Not for this create-workflows folder's own Taste.
+Do this in the **new** workflow folder. Not for this create-workflow folder's own Taste.
 
 ## SoRs.yaml
 
@@ -17,7 +17,7 @@ systems:
       - "example command"
 ```
 
-List one example row per SoR named at intake (GitHub, codebase, Notion, CRM, and so on). Still `REPLACE_ME_*`.
+List one example row per SoR named at intake (GitHub, codebase, Notion, CRM, a2h, and so on). Still `REPLACE_ME_*`.
 
 ## Taste/
 
