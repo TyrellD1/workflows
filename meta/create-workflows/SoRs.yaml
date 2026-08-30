@@ -1,0 +1,20 @@
+# Template only. Fill at CONFIG time on a machine. Do not put secrets here.
+
+systems:
+  - id: REPLACE_ME_repo
+    description: >
+      The workflows git repo. Read and write workflow files here.
+    commands:
+      - "git status"
+      - "git log -5 --oneline"
+  - id: REPLACE_ME_github
+    description: >
+      GitHub remote for this repo, via gh. Use for PRs and reviews.
+    commands:
+      - "gh pr list"
+  - id: REPLACE_ME_logger
+    description: >
+      Workflow log CLI. Use for every start, HiTL, and done event.
+      Do not write log files by hand.
+    commands:
+      - "shared/cli/workflows-log --workflow create-workflows --event start"
