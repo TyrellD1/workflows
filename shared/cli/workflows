@@ -1,0 +1,305 @@
+#!/usr/bin/env bash
+# Temporary coding-skills installer. Copies selected workflows into
+# the current directory's .agents/skills. Bash 3.2+. No extra deps.
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+workflows
+
+Copies coding skills from the workflows repo into this directory's
+.agents/skills.
+
+  workflows          interactive picker (default: all on)
+  workflows --yes    install every coding skill, no picker
+  workflows --help
+
+Keys:  up/down  move    enter  toggle    i  install    q  quit
+EOF
+}
+
+# --- paths ----------------------------------------------------------------
+
+resolve_script_dir() {
+  local source="${BASH_SOURCE[0]}"
+  while [ -L "$source" ]; do
+    local dir
+    dir="$(cd "$(dirname "$source")" && pwd)"
+    source="$(readlink "$source")"
+    [[ $source != /* ]] && source="$dir/$source"
+  done
+  cd "$(dirname "$source")" && pwd
+}
+
+SCRIPT_DIR="$(resolve_script_dir)"
+ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CODING="$ROOT/coding"
+DEST_ROOT="${PWD}/.agents/skills"
+
+# --- style ----------------------------------------------------------------
+
+if [ -t 1 ] && [ "${TERM:-dumb}" != "dumb" ]; then
+  BOLD=$'\033[1m'
+  DIM=$'\033[2m'
+  RESET=$'\033[0m'
+  AMBER=$'\033[38;5;215m'
+  GREEN=$'\033[38;5;114m'
+  MUTED=$'\033[38;5;245m'
+  INV=$'\033[7m'
+else
+  BOLD="" DIM="" RESET="" AMBER="" GREEN="" MUTED="" INV=""
+fi
+
+ascii_mark() {
+  printf '%s' "$AMBER"
+  cat <<'EOF'
+                _     __ _
+__      _____  _ __| | __ / _| | _____      _____
+\ \ /\ / / _ \| '__| |/ / | |_| |/ _ \ \ /\ / / __|
+ \ V  V / (_) | |  |   <  |  _| | (_) \ V  V /\__ \
+  \_/\_/ \___/|_|  |_|\_\ |_| |_|\___/ \_/\_/ |___/
+EOF
+  printf '%s' "$RESET"
+}
+
+# --- skill scan -----------------------------------------------------------
+
+skill_ids=()
+skill_titles=()
+skill_descs=()
+skill_srcs=()
+skill_on=()
+
+frontmatter_val() {
+  local file=$1 key=$2
+  awk -v key="$key" '
+    BEGIN { fm = 0 }
+    /^---[[:space:]]*$/ {
+      if (fm == 1) exit
+      fm = 1
+      next
+    }
+    fm == 1 && $0 ~ ("^" key ":") {
+      sub("^[^:]+:[[:space:]]*", "")
+      print
+      exit
+    }
+  ' "$file"
+}
+
+load_skills() {
+  local skill_md id title desc src
+  if [ ! -d "$CODING" ]; then
+    echo "error: no coding/ folder at $CODING" >&2
+    exit 1
+  fi
+  for skill_md in "$CODING"/*/SKILL.md; do
+    [ -f "$skill_md" ] || continue
+    src="$(cd "$(dirname "$skill_md")" && pwd)"
+    id="$(frontmatter_val "$skill_md" name)"
+    [ -n "$id" ] || id="$(basename "$src")"
+    title="$(frontmatter_val "$skill_md" title)"
+    [ -n "$title" ] || title="$id"
+    desc="$(frontmatter_val "$skill_md" description)"
+    skill_ids+=("$id")
+    skill_titles+=("$title")
+    skill_descs+=("$desc")
+    skill_srcs+=("$src")
+    skill_on+=(1)
+  done
+  if [ ${#skill_ids[@]} -eq 0 ]; then
+    echo "error: no coding skills found in $CODING" >&2
+    exit 1
+  fi
+}
+
+# --- copy -----------------------------------------------------------------
+
+copy_skill() {
+  local id=$1 src=$2
+  local dest="$DEST_ROOT/$id"
+  mkdir -p "$DEST_ROOT"
+  rm -rf "$dest"
+  cp -R "$src" "$dest"
+  printf '  %s✓%s  %s\n' "$GREEN" "$RESET" "$id"
+  printf '      %s%s%s\n' "$DIM" "$dest" "$RESET"
+}
+
+selected_count() {
+  local i c=0
+  i=0
+  while [ $i -lt ${#skill_ids[@]} ]; do
+    [ "${skill_on[$i]}" -eq 1 ] && c=$((c + 1))
+    i=$((i + 1))
+  done
+  echo "$c"
+}
+
+install_selected() {
+  local i
+  printf '\033[H\033[2J'
+  ascii_mark
+  printf '\n  %swriting into%s %s\n\n' "$DIM" "$RESET" "$DEST_ROOT"
+  i=0
+  while [ $i -lt ${#skill_ids[@]} ]; do
+    if [ "${skill_on[$i]}" -eq 1 ]; then
+      copy_skill "${skill_ids[$i]}" "${skill_srcs[$i]}"
+    fi
+    i=$((i + 1))
+  done
+  printf '\n  %sdone.%s  coding skills live in .agents/skills\n' "$GREEN" "$RESET"
+}
+
+# --- picker ---------------------------------------------------------------
+
+cursor=0
+
+draw() {
+  local i n mark title desc
+  n=${#skill_ids[@]}
+  printf '\033[H\033[2J'
+  ascii_mark
+  printf '\n  %sinstalls coding skills into this dir'\''s .agents/skills%s\n' "$MUTED" "$RESET"
+  printf '  %s%s%s\n\n' "$DIM" "$DEST_ROOT" "$RESET"
+
+  i=0
+  while [ $i -lt $n ]; do
+    if [ "${skill_on[$i]}" -eq 1 ]; then
+      mark="${GREEN}●${RESET}"
+    else
+      mark="${MUTED}○${RESET}"
+    fi
+    title="${skill_titles[$i]}"
+    desc="${skill_descs[$i]}"
+    if [ $i -eq $cursor ]; then
+      printf '  %s▸%s %b  %s%s%s\n' "$AMBER" "$RESET" "$mark" "$BOLD" "$title" "$RESET"
+    else
+      printf '    %b  %s\n' "$mark" "$title"
+    fi
+    if [ -n "$desc" ]; then
+      printf '       %s%s%s\n' "$DIM" "$desc" "$RESET"
+    fi
+    i=$((i + 1))
+  done
+
+  printf '\n'
+  if [ $cursor -eq $n ]; then
+    printf '  %s%s  install  %s\n' "$INV" "$GREEN" "$RESET"
+  else
+    printf '  %s  install  %s\n' "$GREEN" "$RESET"
+  fi
+  printf '\n  %senter toggle · i install · q quit%s\n' "$DIM" "$RESET"
+}
+
+read_key() {
+  local k k2 k3
+  IFS= read -rsn1 k || return 1
+  if [ "$k" = $'\x1b' ]; then
+    IFS= read -rsn1 k2 || true
+    IFS= read -rsn1 k3 || true
+    case "$k2$k3" in
+      '[A') echo up ;;
+      '[B') echo down ;;
+      *) echo esc ;;
+    esac
+    return 0
+  fi
+  case "$k" in
+    '') echo enter ;;
+    ' ') echo enter ;;
+    q|Q) echo quit ;;
+    i|I) echo install ;;
+    k) echo up ;;
+    j) echo down ;;
+    *) echo other ;;
+  esac
+}
+
+restore_term() {
+  if [ -n "${STTY_SAVE:-}" ]; then
+    stty "$STTY_SAVE" 2>/dev/null || true
+  fi
+  printf '\033[?25h\033[0m' 2>/dev/null || true
+}
+
+leave_picker() {
+  restore_term
+  trap - EXIT INT TERM
+}
+
+picker() {
+  local n key
+  n=${#skill_ids[@]}
+  STTY_SAVE="$(stty -g 2>/dev/null || true)"
+  trap restore_term EXIT INT TERM
+  printf '\033[?25l'
+  stty -echo -icanon 2>/dev/null || true
+
+  while true; do
+    draw
+    key="$(read_key)" || key=quit
+    case "$key" in
+      up)
+        if [ $cursor -gt 0 ]; then
+          cursor=$((cursor - 1))
+        fi
+        ;;
+      down)
+        if [ $cursor -lt $n ]; then
+          cursor=$((cursor + 1))
+        fi
+        ;;
+      enter)
+        if [ $cursor -eq $n ]; then
+          if [ "$(selected_count)" -eq 0 ]; then
+            continue
+          fi
+          leave_picker
+          install_selected
+          return 0
+        fi
+        if [ "${skill_on[$cursor]}" -eq 1 ]; then
+          skill_on[$cursor]=0
+        else
+          skill_on[$cursor]=1
+        fi
+        ;;
+      install)
+        if [ "$(selected_count)" -eq 0 ]; then
+          continue
+        fi
+        leave_picker
+        install_selected
+        return 0
+        ;;
+      quit|esc)
+        leave_picker
+        printf '\n  %sbail%s\n' "$MUTED" "$RESET"
+        return 0
+        ;;
+    esac
+  done
+}
+
+# --- main -----------------------------------------------------------------
+
+case "${1:-}" in
+  -h|--help|help)
+    usage
+    exit 0
+    ;;
+esac
+
+load_skills
+
+if [ "${1:-}" = "--yes" ] || [ "${1:-}" = "-y" ]; then
+  install_selected
+  exit 0
+fi
+
+if [ ! -t 0 ] || [ ! -t 1 ]; then
+  echo "error: no tty. re-run in a terminal, or pass --yes" >&2
+  exit 1
+fi
+
+picker

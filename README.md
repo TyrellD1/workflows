@@ -14,6 +14,20 @@ curl -fsSL https://raw.githubusercontent.com/TyrellD1/agenttohuman/main/install.
 
 Then tell the agent: configure a2h for me.
 
+Coding skills onto a project (temporary CLI):
+
+```bash
+./install.sh
+```
+
+Then in any project:
+
+```bash
+workflows
+```
+
+That copies coding skills into that project's `.agents/skills`. Picker defaults to all on. Enter toggles. `i` installs.
+
 ## Folders
 
 - `coding/` — software work (build to spec, create spec, respond to a PR review)
