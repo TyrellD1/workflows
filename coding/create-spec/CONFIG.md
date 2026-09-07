@@ -21,10 +21,7 @@ Do not commit machine-specific values or secrets back to the canonical repo.
 
 ## Taste
 
-- File: `Taste/product_depth.md`
-  - Fill: how many question rounds to expect
-  - Pointed from: Processes/create_round.md, HiTL/ask_questions.md (anticipated rounds)
-  - Edit: write that Taste file. Filename can stay.
+None right now. `Taste/` stays a stub.
 
 ## Other setup
 

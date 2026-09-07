@@ -4,13 +4,11 @@
 
 After a round is written to PLAN. Before the next round or INTENT.md.
 
-Chat only. Do not a2h. Write the chat with the chat-with-human skill. Read Taste/product_depth.md for anticipated rounds.
+Chat only. Do not a2h.
 
 ## Chat
 
-Questions: max 5 sentences. Meat in the first paragraph, and bold it.
-Recommendations: 2-3 sentences.
-Granularity: 1 is biggest picture, 10 is most detailed.
+max 5 sentences. Meat in the first 1-2 sentences, and bold it. Use /chat-with-human skill for the writing. Recommendations: 2-3 sentences. Granularity: 1 is biggest picture, 10 is most detailed.
 
 ```
 **Anticipated rounds:** `<n-rounds>`
