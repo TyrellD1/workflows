@@ -1,0 +1,27 @@
+# Template only. Fill at CONFIG time on a machine. Do not put secrets here.
+
+systems:
+  - id: REPLACE_ME_codebase
+    description: >
+      The product repo this idea is for. Read it before each question round.
+      Do not invent files that are not there.
+    commands:
+      - "example: list the repo root"
+  - id: REPLACE_ME_docs
+    description: >
+      Extra docs or product SoRs to read with the codebase.
+      Surface conflicts with the idea.
+    commands:
+      - "example: fetch the product doc"
+  - id: REPLACE_ME_logger
+    description: >
+      Workflow log CLI. Use for every start, HiTL, and done event.
+      Do not write log files by hand.
+    commands:
+      - "shared/cli/workflows-log --workflow create-spec --event start"
+  - id: REPLACE_ME_a2h
+    description: >
+      Agent-to-human CLI. Use for HiTL question rounds.
+      Send the compressed a2h template. Do not POST to Discord yourself.
+    commands:
+      - "a2h send --json \"<message>\""
