@@ -10,7 +10,6 @@ This workflow accepts an idea and ends with a plan file named INTENT.md.
 
 - An idea (not a finished spec)
 - The product repo and any docs it should read (filled at setup)
-- `a2h` installed and configured so question rounds can ping you. See the root README.
 
 ## How it works
 

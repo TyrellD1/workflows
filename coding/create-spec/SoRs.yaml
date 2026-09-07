@@ -19,9 +19,3 @@ systems:
       Do not write log files by hand.
     commands:
       - "shared/cli/workflows-log --workflow create-spec --event start"
-  - id: REPLACE_ME_a2h
-    description: >
-      Agent-to-human CLI. Use for HiTL question rounds.
-      Send the compressed a2h template. Do not POST to Discord yourself.
-    commands:
-      - "a2h send --json \"<message>\""

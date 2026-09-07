@@ -4,15 +4,7 @@
 
 After a round is written to PLAN. Before the next round or INTENT.md.
 
-Write the chat with the chat-with-human skill. Read Taste/product_depth.md for anticipated rounds.
-
-## a2h
-
-```
-a2h send --json "create-spec: round <N> questions are in chat. Answer, or say the plan is clear enough."
-```
-
-If `a2h` is missing, tell the human to install https://github.com/TyrellD1/agenttohuman and ask their agent to configure it. Still send Chat.
+Chat only. Do not a2h. Write the chat with the chat-with-human skill. Read Taste/product_depth.md for anticipated rounds.
 
 ## Chat
 

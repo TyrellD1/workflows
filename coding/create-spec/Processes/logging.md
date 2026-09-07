@@ -16,4 +16,4 @@ Writes one JSONL line to `~/.workflows/logs/<workflow>/<YYYY-MM-DD>.jsonl`.
 
 Always log: `start`, every `hitl`, `done`. Log `error` when you stop.
 
-HiTL log: `--event hitl --template ask_questions --status escalated` when you send. Then `--status resolved` or `gave_up` when you leave that HiTL.
+HiTL log: `--event hitl --template ask_questions --status escalated` when you send Chat. Then `--status resolved` or `gave_up` when you leave that HiTL. Chat-only still logs.

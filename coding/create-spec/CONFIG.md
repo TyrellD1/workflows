@@ -19,11 +19,6 @@ Do not commit machine-specific values or secrets back to the canonical repo.
   - Pointed from: Processes/logging.md, SKILL.md (log start / HiTL / done)
   - Edit: set the real command path if this machine does not use `shared/cli/workflows-log`.
 
-- id: `REPLACE_ME_a2h`
-  - Fill: `a2h` CLI after install + configure
-  - Pointed from: HiTL/ask_questions.md (`## a2h`)
-  - Edit: install https://github.com/TyrellD1/agenttohuman, have the agent run `a2h init`, then keep the `a2h send --json` line as-is.
-
 ## Taste
 
 - File: `Taste/product_depth.md`
@@ -33,7 +28,6 @@ Do not commit machine-specific values or secrets back to the canonical repo.
 
 ## Other setup
 
-- a2h: required for HiTL escalations. Install https://github.com/TyrellD1/agenttohuman and have the agent configure it.
 - Logger: `shared/cli/workflows-log`
 - PLAN folder: `.coding-agents/<ts>_<work-slug>/PLAN/` (roundN.md, then INTENT.md)
 - Skip open INTENT.md: set `skip_open_intent: true` here if the user should not get an `open` on that file. Pointed from: Processes/open_intent.md
