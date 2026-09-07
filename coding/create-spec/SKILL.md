@@ -2,6 +2,7 @@
 name: create-spec
 title: Create spec
 description: This workflow accepts an idea and ends with INTENT.md (plan phase done). Use when turning a product idea into a plan before Design.
+disable-model-invocation: true
 ---
 
 # Create spec
